@@ -1,0 +1,39 @@
+# OS
+thumbs.db
+.DS_Store
+
+# Internal references, dependencies, temporary folders & files
+.env
+# **/__ref__/
+*.log
+*.lock
+*.db
+*.parquet
+services/api/src/emu/configs/services/*.yaml
+
+# Python
+__pycache__/
+*.py*
+*$py.class
+*.egg-info
+.pytest_cache
+.ipynb_checkpoints
+venv/
+
+# pip
+**/build/
+
+# pytest-cov
+**/.coverage*
+/junit
+/htmlcov
+/coverage.xml
+
+# jest-cov
+**/coverage/*
+
+# JavaScript
+**/node_modules/
+
+# frontend
+services/ui-tsp
