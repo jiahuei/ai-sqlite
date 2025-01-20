@@ -29,7 +29,7 @@ markers = ["organization: marks tests related to Organization endpoint tests"]
 [tool.coverage.run]
 source = ["aisql"]
 relative_files = true
-concurrency = ["multiprocessing", "thread", "greenlet"]
+concurrency = ["multiprocessing", "thread"]
 parallel = true
 
 # [tool.coverage.paths]
