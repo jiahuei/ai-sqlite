@@ -9,7 +9,6 @@ thumbs.db
 *.lock
 *.db
 *.parquet
-services/api/src/emu/configs/services/*.yaml
 
 # Python
 __pycache__/
@@ -34,6 +33,3 @@ venv/
 
 # JavaScript
 **/node_modules/
-
-# frontend
-services/ui-tsp

@@ -1,2 +1,3 @@
-# ai-sqlite
+# AI SQLite
+
 SQLite with hybrid search
