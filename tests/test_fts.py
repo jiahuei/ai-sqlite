@@ -136,6 +136,7 @@ async def test_cn_two_terms_multicolumn():
         assert len(results.rows) == 2
 
 
-import asyncio
+if __name__ == "__main__":
+    import asyncio
 
-asyncio.run(test_cn_two_terms())
+    asyncio.run(test_cn_two_terms())
