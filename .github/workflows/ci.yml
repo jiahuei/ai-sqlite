@@ -74,6 +74,7 @@ jobs:
         if: always() && steps.launch_sqld.outcome == 'success'
         run: |
           # Generate reports
+          ls coverage
           coverage html --data-file=coverage/.coverage -d coverage/html
           coverage xml --data-file=coverage/.coverage -o coverage/coverage.xml
 
