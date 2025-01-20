@@ -33,7 +33,7 @@ concurrency = ["multiprocessing", "thread", "greenlet"]
 parallel = true
 
 # [tool.coverage.paths]
-# source = ["services/api/src", "src"]
+# source = ["src"]
 
 # -----------------------------------------------------------------------------
 # Ruff configuration

@@ -25,14 +25,13 @@ jobs:
       - name: Install linting libraries
         run: |
           set -e
-          cd services/api
           python3 -m pip install "ruff~=0.6"
 
       - name: Check Python files using Ruff
         run: |
           set -e
-          ruff check --output-format github --config services/api/pyproject.toml .
-          ruff format --diff --config services/api/pyproject.toml .
+          ruff check --output-format github --config pyproject.toml .
+          ruff format --diff --config pyproject.toml .
 
   prettier_lint:
     name: Prettier Checks

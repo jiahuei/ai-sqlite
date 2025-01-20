@@ -65,7 +65,6 @@ jobs:
         if: always()
         run: |
           # Generate reports
-          cd services/api
           coverage html --data-file=coverage/.coverage -d coverage/html
           coverage xml --data-file=coverage/.coverage -o coverage/coverage.xml
 
@@ -75,14 +74,14 @@ jobs:
         if: always() && steps.generate_coverage_report.outcome == 'success'
         with:
           name: pytest-coverage-${{ matrix.python-version }}
-          path: services/api/coverage/html
+          path: coverage/html
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
         if: always() && github.event_name == 'pull_request' && steps.generate_coverage_report.outcome == 'success'
         with:
-          pytest-xml-coverage-path: services/api/coverage/coverage.xml
-          junitxml-path: services/api/pytest.xml
+          pytest-xml-coverage-path: coverage/coverage.xml
+          junitxml-path: pytest.xml
 
       - name: Publish coverage HTML report link as PR comment
         uses: thollander/actions-comment-pull-request@v3
