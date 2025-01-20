@@ -67,7 +67,7 @@ jobs:
         id: pytest
         run: |
           mkdir coverage
-          coverage run --data-file=.coverage --rcfile=pyproject.toml -m pytest --junitxml=pytest.xml tests
+          coverage run --data-file=coverage/.coverage --rcfile=pyproject.toml -m pytest --junitxml=pytest.xml tests
 
       - name: Generate coverage reports
         id: generate_coverage_report
