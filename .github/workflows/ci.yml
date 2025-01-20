@@ -67,7 +67,6 @@ jobs:
         id: pytest
         run: |
           mkdir coverage
-          coverage combine --keep --rcfile=pyproject.toml coverage
           coverage run --data-file=coverage/.coverage --rcfile=pyproject.toml -m pytest --junitxml=pytest.xml tests
 
       - name: Generate coverage reports
@@ -75,7 +74,7 @@ jobs:
         if: always() && steps.launch_sqld.outcome == 'success'
         run: |
           # Generate reports
-          ls coverage
+          coverage combine --keep --rcfile=pyproject.toml coverage
           coverage html --data-file=coverage/.coverage -d coverage/html
           coverage xml --data-file=coverage/.coverage -o coverage/coverage.xml
 
