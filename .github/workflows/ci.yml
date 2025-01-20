@@ -49,11 +49,13 @@ jobs:
       - name: Inspect git version
         run: git --version
 
-      - name: Build and launch sqld
+      - name: Launch sqld
         id: launch_sqld
         run: |
-          docker build -f Dockerfile -t sqld .
-          docker run -p 8080:8080 --rm -d sqld
+          docker run -p 8080:8080 \
+            -v ${PWD}/sqld_ext:/var/lib/sqld/sqld_ext \
+            --rm -d \
+            ghcr.io/tursodatabase/libsql-server:latest /bin/sqld --extensions-path /var/lib/sqld/sqld_ext
 
       - name: Install aisql
         run: pip install -e .[test]
@@ -64,7 +66,8 @@ jobs:
       - name: Run tests
         id: pytest
         run: |
-          coverage run --data-file=coverage/.coverage --rcfile=pyproject.toml -m pytest --junitxml=pytest.xml tests
+          mkdir coverage
+          coverage run --data-file=.coverage --rcfile=pyproject.toml -m pytest --junitxml=pytest.xml tests
 
       - name: Generate coverage reports
         id: generate_coverage_report
