@@ -74,7 +74,7 @@ jobs:
         if: always() && steps.launch_sqld.outcome == 'success'
         run: |
           # Generate reports
-          coverage combine --keep --rcfile=pyproject.toml coverage
+          coverage combine --keep --rcfile=pyproject.toml --data-file=coverage/.coverage coverage
           coverage html --data-file=coverage/.coverage -d coverage/html
           coverage xml --data-file=coverage/.coverage -o coverage/coverage.xml
 
