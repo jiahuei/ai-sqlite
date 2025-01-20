@@ -49,17 +49,17 @@ jobs:
       - name: Inspect git version
         run: git --version
 
-      - name: Install aisql
-        run: pip install -e .[test]
-
-      - name: Inspect Python environment
-        run: pip list
-
       - name: Build and launch sqld
         id: launch_sqld
         run: |
           docker build -f Dockerfile -t sqld .
           docker run -p 8080:8080 --rm -d sqld
+
+      - name: Install aisql
+        run: pip install -e .[test]
+
+      - name: Inspect Python environment
+        run: pip list
 
       - name: Run tests
         id: pytest
