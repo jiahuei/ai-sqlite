@@ -29,8 +29,8 @@ markers = ["organization: marks tests related to Organization endpoint tests"]
 [tool.coverage.run]
 source = ["aisql"]
 relative_files = true
-concurrency = ["multiprocessing", "thread"]
-parallel = true
+# concurrency = ["multiprocessing", "thread"]
+# parallel = true
 
 # [tool.coverage.paths]
 # source = ["src"]
@@ -116,11 +116,8 @@ dependencies = [
     "orjson~=3.10.7",
     "pandas~=2.2",
     "Pillow>=10.0.0",
-    "pwdlib[argon2]>=0.2.1",
-    "pycryptodomex~=3.21.0",
-    "pydantic-extra-types~=2.9.0",
     "pydantic-settings>=2.0.3",
-    "pydantic~=2.10.3",            # https://github.com/pydantic/pydantic/issues/8271
+    "pydantic~=2.10.3",          # https://github.com/pydantic/pydantic/issues/8271
     "tqdm~=4.66.5",
     "typing_extensions>=4.12.2",
     "uuid-utils~=0.9.0",
@@ -131,14 +128,11 @@ dynamic = ["version"]
 [project.optional-dependencies]
 lint = ["ruff~=0.6.1"]
 test = [
-    "parameterized",
     "flaky~=3.8.1",
     "mypy~=1.11.1",
     "pytest-asyncio>=0.23.8",
-    "pytest-cov",
     "pytest-timeout>=2.3.1",
     "pytest~=8.3.2",
-    "freezegun",
 ]
 docs = [
     "furo~=2024.8.6",              # Sphinx theme (nice looking, with dark mode)
