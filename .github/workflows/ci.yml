@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+
+# Cancel in-progress CI jobs if there is a new push
+# https://stackoverflow.com/a/72408109
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+# https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token
+permissions:
+  contents: write
+  checks: write
+  pull-requests: write
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12"]
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Check Python Version
+        run: python -V
+
+      - name: Inspect git version
+        run: git --version
+
+      - name: Install aisql
+        run: pip install -e .[test]
+
+      - name: Inspect Python environment
+        run: pip list
+
+      - name: Run tests
+        id: pytest
+        run: |
+          coverage run --data-file=coverage/.coverage --rcfile=pyproject.toml -m pytest --junitxml=pytest.xml tests
+
+      - name: Generate coverage reports
+        id: generate_coverage_report
+        if: always()
+        run: |
+          # Generate reports
+          cd services/api
+          coverage html --data-file=coverage/.coverage -d coverage/html
+          coverage xml --data-file=coverage/.coverage -o coverage/coverage.xml
+
+      - name: Upload coverage HTML report
+        id: upload_coverage_html
+        uses: actions/upload-artifact@v4
+        if: always() && steps.generate_coverage_report.outcome == 'success'
+        with:
+          name: pytest-coverage-${{ matrix.python-version }}
+          path: services/api/coverage/html
+
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        if: always() && github.event_name == 'pull_request' && steps.generate_coverage_report.outcome == 'success'
+        with:
+          pytest-xml-coverage-path: services/api/coverage/coverage.xml
+          junitxml-path: services/api/pytest.xml
+
+      - name: Publish coverage HTML report link as PR comment
+        uses: thollander/actions-comment-pull-request@v3
+        if: always() && github.event_name == 'pull_request' && steps.generate_coverage_report.outcome == 'success'
+        with:
+          message: |
+            [Link to coverage HTML report](${{ steps.upload_coverage_html.outputs.artifact-url }})
+          comment-tag: coverage_html_report_comment
