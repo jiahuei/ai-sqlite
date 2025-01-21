@@ -57,7 +57,8 @@ async def test_en_one_term_rank():
         # Search
         results = await client.fts_search("hello")
         assert len(results.rows) == len(data)
-        assert results.rows[0][0] == data[1]
+        assert results.rows[0][0] == 2
+        assert results.rows[0][1] == data[1]
 
 
 async def test_en_two_terms():
@@ -96,7 +97,8 @@ async def test_en_two_terms_rank():
         # Search
         results = await client.fts_search("hello OR run")
         assert len(results.rows) == len(data)
-        assert results.rows[0][0] == data[-1]
+        assert results.rows[0][0] == 3
+        assert results.rows[0][1] == data[-1]
 
 
 async def test_cn_two_terms():
@@ -108,8 +110,10 @@ async def test_cn_two_terms():
         # Search
         results = await client.fts_search("你好")
         assert len(results.rows) == 2
-        assert results.rows[0][0] == titles[0]
-        assert results.rows[1][0] == titles[1]
+        assert results.rows[0][0] == 1
+        assert results.rows[1][0] == 2
+        assert results.rows[0][1] == titles[0]
+        assert results.rows[1][1] == titles[1]
         results = await client.fts_search("你 好")
         assert len(results.rows) == 4
         results = await client.fts_search("你 OR 好")
